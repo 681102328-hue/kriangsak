@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="th" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kriangsak Pansuai | Creative Web Portfolio</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Prompt & Orbitron -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cyber: {
+                            black: '#0a0a12',
+                            dark: '#121324',
+                            card: 'rgba(20, 22, 45, 0.65)',
+                            cyan: '#00f0ff',
+                            magenta: '#ff007f',
+                            purple: '#7000ff',
+                            gold: '#ffb703',
+                            neon: '#39ff14'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Prompt', 'sans-serif'],
+                        tech: ['Orbitron', 'sans-serif']
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate'
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-15px)' }
+                        },
+                        glow: {
+                            '0%': { filter: 'drop-shadow(0 0 15px rgba(0, 240, 255, 0.6))' },
+                            '100%': { filter: 'drop-shadow(0 0 35px rgba(255, 0, 127, 0.8))' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0a0a12;
+            color: #e2e8f0;
+            overflow-x: hidden;
+            font-family: 'Prompt', sans-serif;
+        }
+
+        /* Glassmorphism */
+        .glass-panel {
+            background: rgba(18, 20, 40, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        .glass-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .glass-card:hover {
+            border-color: rgba(0, 240, 255, 0.5);
+            box-shadow: 0 0 35px rgba(0, 240, 255, 0.25), inset 0 0 15px rgba(0, 240, 255, 0.1);
+            transform: translateY(-8px) scale(1.02);
+        }
+
+        /* Cyber Glow & Text Effects */
+        .text-glow-cyan {
+            text-shadow: 0 0 12px rgba(0, 240, 255, 0.7), 0 0 25px rgba(0, 240, 255, 0.4);
+        }
+
+        .text-glow-magenta {
+            text-shadow: 0 0 12px rgba(255, 0, 127, 0.7), 0 0 25px rgba(255, 0, 127, 0.4);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #00f0ff 0%, #7000ff 50%, #ff007f 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .gradient-border {
+            position: relative;
+            border-radius: 1rem;
+            background: linear-gradient(135deg, rgba(0, 240, 255, 0.3), rgba(255, 0, 127, 0.3));
+            padding: 1px;
+        }
+
+        .gradient-border-inner {
+            background: #0d0e1b;
+            border-radius: 0.95rem;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0a12;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, #00f0ff, #ff007f);
+            border-radius: 4px;
+        }
+
+        /* Scanline Overlay */
+        .scanline {
+            background: linear-gradient(
+                to bottom,
+                rgba(255,255,255,0),
+                rgba(255,255,255,0) 50%,
+                rgba(0, 0, 0, 0.2) 50%,
+                rgba(0, 0, 0, 0.2)
+            );
+            background-size: 100% 4px;
+        }
+
+        /* Hero Text Hover Glitch Visual */
+        .glitch-hover:hover {
+            animation: glitch 0.3s cubic-bezier(.25, .46, .45, .94) both infinite;
+        }
+
+        @keyframes glitch {
+            0% { transform: translate(0) }
+            20% { transform: translate(-2px, 2px) }
+            40% { transform: translate(-2px, -2px) }
+            60% { transform: translate(2px, 2px) }
+            80% { transform: translate(2px, -2px) }
+            100% { transform: translate(0) }
+        }
+    </style>
+</head>
+<body class="relative min-h-screen text-slate-200 antialiased selection:bg-cyan-500 selection:text-black">
+
+    <!-- Interactive Background Canvas -->
+    <canvas id="bgCanvas" class="fixed top-0 left-0 w-full h-full pointer-events-none z-0"></canvas>
+
+    <!-- CRT Scanline Effect Layer -->
+    <div class="fixed inset-0 scanline pointer-events-none z-10 opacity-30"></div>
+
+    <!-- Navigation Bar -->
+    <nav class="fixed top-0 left-0 w-full z-50 glass-panel border-b border-white/10 px-6 py-4 transition-all duration-300">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <!-- Brand Logo -->
+            <a href="#hero" class="flex items-center space-x-3 group" onclick="playAudio('click')">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 via-purple-600 to-pink-500 p-[2px] transition-transform duration-300 group-hover:rotate-12">
+                    <div class="w-full h-full bg-cyber-black rounded-[10px] flex items-center justify-center font-tech font-bold text-cyan-400 text-lg">
+                        KP
+                    </div>
+                </div>
+                <span class="font-tech font-bold text-lg tracking-wider text-white group-hover:text-cyan-400 transition-colors">
+                    KRIANGSAK<span class="text-pink-500">.</span>DEV
+                </span>
+            </a>
+
+            <!-- Right Controls -->
+            <div class="flex items-center space-x-4">
+                <a href="#portfolio" onclick="playAudio('click')" class="hidden md:inline-flex items-center space-x-2 px-4 py-2 rounded-lg bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 hover:bg-cyan-500 hover:text-black transition-all duration-300 font-medium text-sm">
+                    <i class="fa-solid font-tech text-xs">01.</i>
+                    <span>ผลงานทั้งหมด</span>
+                </a>
+                
+                <!-- Sound Toggle Button -->
+                <button id="soundToggleBtn" onclick="toggleSound()" class="p-2.5 rounded-lg bg-white/5 border border-white/10 hover:border-cyan-400/50 text-slate-300 hover:text-cyan-400 transition-all text-sm" title="เปิด/ปิด เสียงเอฟเฟกต์">
+                    <i id="soundIcon" class="fa-solid fa-volume-high"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section id="hero" class="relative min-h-screen flex items-center justify-center pt-24 pb-16 px-4 z-20">
+        <div class="max-w-5xl mx-auto text-center relative">
+            
+            <!-- Floating Decorative Badges -->
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card border border-cyan-500/30 text-cyan-300 text-xs sm:text-sm font-tech tracking-wider mb-8 animate-float">
+                <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+                <i class="fa-solid fa-code"></i> CREATIVE WEB DEVELOPER & DESIGNER
+            </div>
+
+            <!-- Primary Name Title -->
+            <h1 class="font-tech font-black text-4xl sm:text-6xl md:text-8xl tracking-tight text-white mb-6 leading-tight">
+                <span class="block hover:scale-105 transition-transform duration-300 glitch-hover cursor-pointer" onclick="scrollToPortfolio()">
+                    KRIANGSAK
+                </span>
+                <span class="gradient-text block hover:scale-105 transition-transform duration-300 glitch-hover cursor-pointer drop-shadow-2xl" onclick="scrollToPortfolio()">
+                    PANSUAI
+                </span>
+            </h1>
+
+            <!-- Subtitle Description -->
+            <p class="max-w-2xl mx-auto text-base sm:text-lg text-slate-300 font-light leading-relaxed mb-10">
+                รวบรวมเว็บไซต์และมินิโปรเจกต์เชิงโต้ตอบ <span class="text-cyan-400 font-medium">UI/UX, Web Games, Health Tools & Interactive Applications</span> สไตล์กราฟิกไซเบอร์สุดล้ำ
+            </p>
+
+            <!-- Call To Action Trigger Buttons -->
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-5">
+                <button onclick="scrollToPortfolio()" class="group relative px-8 py-4 rounded-xl font-tech font-bold text-black bg-gradient-to-r from-cyan-400 via-teal-300 to-pink-500 hover:opacity-95 shadow-[0_0_30px_rgba(0,240,255,0.4)] hover:shadow-[0_0_50px_rgba(255,0,127,0.6)] transition-all duration-300 transform hover:-translate-y-1 w-full sm:w-auto">
+                    <span class="flex items-center justify-center gap-3">
+                        <i class="fa-solid fa-rocket text-black group-hover:rotate-45 transition-transform duration-300"></i>
+                        สำรวจผลงานทั้งหมด
+                        <i class="fa-solid fa-arrow-down text-sm"></i>
+                    </span>
+                </button>
+
+                <button onclick="openRandomProject()" class="px-8 py-4 rounded-xl glass-card font-tech font-semibold text-slate-200 border border-white/20 hover:border-pink-500 hover:text-pink-400 transition-all duration-300 w-full sm:w-auto flex items-center justify-center gap-3">
+                    <i class="fa-solid fa-dice text-pink-400"></i>
+                    สุ่มเปิดโปรเจกต์
+                </button>
+            </div>
+
+            <!-- Interactive Counter / Quick Stats -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-16 max-w-3xl mx-auto pt-8 border-t border-white/10 text-center">
+                <div class="p-3">
+                    <div class="font-tech font-bold text-2xl md:text-3xl text-cyan-400">7+</div>
+                    <div class="text-xs text-slate-400 mt-1">Web Applications</div>
+                </div>
+                <div class="p-3">
+                    <div class="font-tech font-bold text-2xl md:text-3xl text-pink-500">100%</div>
+                    <div class="text-xs text-slate-400 mt-1">Responsive Design</div>
+                </div>
+                <div class="p-3">
+                    <div class="font-tech font-bold text-2xl md:text-3xl text-purple-400">2026</div>
+                    <div class="text-xs text-slate-400 mt-1">Latest Edition</div>
+                </div>
+                <div class="p-3">
+                    <div class="font-tech font-bold text-2xl md:text-3xl text-green-400">GitHub</div>
+                    <div class="text-xs text-slate-400 mt-1">Pages Hosted</div>
+                </div>
+            </div>
+
+            <!-- Scroll Down Indicator -->
+            <div class="mt-12 animate-bounce cursor-pointer" onclick="scrollToPortfolio()">
+                <i class="fa-solid fa-angle-down text-2xl text-cyan-400/70"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- PORTFOLIO SHOWCASE GALLERY SECTION -->
+    <section id="portfolio" class="relative min-h-screen py-20 px-4 sm:px-6 lg:px-8 z-20 max-w-7xl mx-auto">
+        
+        <!-- Section Header -->
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 border-b border-white/10 pb-6">
+            <div>
+                <div class="font-tech text-cyan-400 text-sm tracking-widest uppercase mb-2">
+                    // Portfolio Showcase
+                </div>
+                <h2 class="font-tech font-bold text-3xl sm:text-5xl text-white">
+                    PROJECT <span class="gradient-text">GALLERY</span>
+                </h2>
+            </div>
+            <p class="text-slate-400 text-sm max-w-md mt-4 md:mt-0">
+                รวมผลงานพัฒนาเว็บไซต์ เกมส์ และโปรแกรมประมวลผล คลิกเพื่อชมตัวอย่างหรือเข้าสู่เว็บไซต์จริง
+            </p>
+        </div>
+
+        <!-- Filter Buttons -->
+        <div class="flex flex-wrap gap-3 mb-10" id="filterContainer">
+            <button onclick="filterProjects('all')" class="filter-btn active px-5 py-2.5 rounded-xl font-tech text-xs tracking-wider border border-cyan-500 bg-cyan-500 text-black font-semibold transition-all">
+                ALL PROJECTS (7)
+            </button>
+            <button onclick="filterProjects('web')" class="filter-btn px-5 py-2.5 rounded-xl font-tech text-xs tracking-wider border border-white/10 glass-card text-slate-300 hover:border-cyan-400 transition-all">
+                WEB & UI/UX (3)
+            </button>
+            <button onclick="filterProjects('game')" class="filter-btn px-5 py-2.5 rounded-xl font-tech text-xs tracking-wider border border-white/10 glass-card text-slate-300 hover:border-pink-500 transition-all">
+                GAMES (2)
+            </button>
+            <button onclick="filterProjects('app')" class="filter-btn px-5 py-2.5 rounded-xl font-tech text-xs tracking-wider border border-white/10 glass-card text-slate-300 hover:border-purple-500 transition-all">
+                UTILITY & TOOLS (2)
+            </button>
+        </div>
+
+        <!-- Dynamic Projects Grid -->
+        <div id="projectsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Cards generated dynamically via JavaScript -->
+        </div>
+    </section>
+
+    <!-- PREVIEW MODAL -->
+    <div id="previewModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="glass-panel border border-cyan-500/40 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col shadow-2xl transform scale-95 transition-transform duration-300" id="modalContent">
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between p-5 border-b border-white/10 bg-cyber-dark/80">
+                <div class="flex items-center gap-3">
+                    <span id="modalIcon" class="text-2xl text-cyan-400"></span>
+                    <div>
+                        <h3 id="modalTitle" class="font-tech font-bold text-xl text-white">Project Title</h3>
+                        <p id="modalCategory" class="text-xs text-cyan-400 font-tech">CATEGORY</p>
+                    </div>
+                </div>
+                <button onclick="closeModal()" class="w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-slate-400 hover:text-white transition-colors">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="p-6 overflow-y-auto space-y-6">
+                <!-- Preview Visual / Frame Wrapper -->
+                <div class="relative w-full aspect-video rounded-xl overflow-hidden border border-white/10 group bg-slate-900">
+                    <div id="modalMockup" class="w-full h-full flex flex-col items-center justify-center p-6 text-center bg-gradient-to-br from-slate-900 via-cyber-dark to-slate-950">
+                        <!-- Dynamic Visual Mockup Content -->
+                    </div>
+                </div>
+
+                <!-- Description & Details -->
+                <div>
+                    <h4 class="text-xs font-tech text-slate-400 uppercase tracking-widest mb-2">// รายละเอียดโปรเจกต์</h4>
+                    <p id="modalDescription" class="text-slate-200 text-base leading-relaxed"></p>
+                </div>
+
+                <!-- URL Display Box -->
+                <div class="p-4 rounded-xl bg-black/40 border border-white/5 flex items-center justify-between gap-4">
+                    <div class="truncate text-xs font-mono text-cyan-300" id="modalUrlText">https://...</div>
+                    <button onclick="copyModalUrl()" class="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-xs text-white font-tech transition-colors flex items-center gap-1.5 shrink-0">
+                        <i class="fa-regular fa-copy"></i>
+                        <span>คัดลอกลิงก์</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="p-5 border-t border-white/10 bg-cyber-dark/80 flex items-center justify-end gap-3">
+                <button onclick="closeModal()" class="px-5 py-2.5 rounded-xl border border-white/10 hover:bg-white/5 text-slate-300 font-tech text-sm transition-colors">
+                    ปิดหน้าต่าง
+                </button>
+                <a id="modalLaunchBtn" href="#" target="_blank" onclick="playAudio('launch')" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-cyan-400 to-pink-500 font-tech font-bold text-black hover:opacity-90 transition-opacity text-sm flex items-center gap-2">
+                    <span>เปิดเว็บไซต์จริง</span>
+                    <i class="fa-solid fa-up-right-from-square text-xs"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="relative z-20 border-t border-white/10 bg-cyber-black/90 py-10 px-4 text-center">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="text-left">
+                <div class="font-tech font-bold text-white text-lg">KRIANGSAK PANSUAI</div>
+                <div class="text-xs text-slate-400 mt-1">Creative Web Portfolio & Showcase Projects</div>
+            </div>
+            
+            <div class="text-xs text-slate-500 font-tech">
+                &copy; 2026 Kriangsak Pansuai. Crafted with HTML5 & Tailwind CSS.
+            </div>
+
+            <div class="flex items-center space-x-4 text-slate-400 text-lg">
+                <a href="https://github.com/681102328-hue" target="_blank" class="hover:text-cyan-400 transition-colors" title="GitHub Profile"><i class="fa-brands fa-github"></i></a>
+                <a href="#hero" onclick="scrollToHero()" class="hover:text-pink-500 transition-colors" title="Back to Top"><i class="fa-solid fa-arrow-up"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        /* ----------------------------------------------------
+           1. PROJECT DATA CONFIGURATION
+        ---------------------------------------------------- */
+        const projectsData = [
+            {
+                id: 'modern',
+                title: 'Modern Web Design',
+                category: 'web',
+                categoryLabel: 'UI/UX DESIGN',
+                url: 'https://681102328-hue.github.io/modern/',
+                description: 'เว็บไซต์ดีไซน์ทันสมัย เรียบหรู ใช้งานง่าย เน้น UI/UX สไตล์ Modern Design พร้อมการจัดวาง Layout ที่ได้มาตรฐานสากล ตอบโจทย์ทุกการใช้งาน',
+                icon: 'fa-solid fa-wand-magic-sparkles',
+                gradient: 'from-cyan-500 to-blue-600',
+                accentColor: '#00f0ff',
+                features: ['Modern UI Layout', 'Responsive Flow', 'Smooth Transition']
+            },
+            {
+                id: 'gm',
+                title: 'GM / Game Management',
+                category: 'app',
+                categoryLabel: 'PORTAL & SYSTEM',
+                url: 'https://681102328-hue.github.io/GM/',
+                description: 'แพลตฟอร์มการจัดการเกม ระบบดูแลสมาชิกและสถิติการเล่น ควบคุมระบบหลังบ้านและมอนิเตอร์ข้อมูลได้อย่างมีประสิทธิภาพ',
+                icon: 'fa-solid fa-shield-halved',
+                gradient: 'from-purple-600 to-indigo-600',
+                accentColor: '#7000ff',
+                features: ['Member Management', 'Game Stats Portal', 'Dashboard Control']
+            },
+            {
+                id: 'bmi',
+                title: 'BMI Calculator Tool',
+                category: 'app',
+                categoryLabel: 'HEALTH UTILITY',
+                url: 'https://681102328-hue.github.io/BMI/',
+                description: 'โปรแกรมคำนวณดัชนีมวลกาย (Body Mass Index) ประมวลผลสุขภาพได้อย่างแม่นยำ รวดเร็ว พร้อมคำแนะนำด้านสุขภาพเบื้องต้น',
+                icon: 'fa-solid fa-calculator',
+                gradient: 'from-emerald-400 to-teal-600',
+                accentColor: '#39ff14',
+                features: ['Instant Calculation', 'Health Score Scale', 'Clean User Interface']
+            },
+            {
+                id: 'testimage',
+                title: 'Test Image Gallery',
+                category: 'web',
+                categoryLabel: 'MEDIA & GALLERY',
+                url: 'https://681102328-hue.github.io/testimage/',
+                description: 'ระบบจัดการและแสดงผลรูปภาพ พร้อมเอฟเฟกต์การพรีวิวแบบ Interactive สไตล์แกลเลอรีภาพถ่ายสมัยใหม่',
+                icon: 'fa-solid fa-images',
+                gradient: 'from-pink-500 to-rose-600',
+                accentColor: '#ff007f',
+                features: ['Interactive Preview', 'Dynamic Grid Layout', 'Image Optimizations']
+            },
+            {
+                id: 'games2',
+                title: 'Web Games Collection 2',
+                category: 'game',
+                categoryLabel: 'INTERACTIVE GAMES',
+                url: 'https://681102328-hue.github.io/games2/',
+                description: 'รวมเกมมินิเกมบนเว็บสุดมันส์ สนุกสนานพร้อมกราฟิกสีสันสดใส และระบบเกมเพลย์ที่ท้าทายผ่านเบราว์เซอร์',
+                icon: 'fa-solid fa-gamepad',
+                gradient: 'from-amber-400 to-orange-600',
+                accentColor: '#ffb703',
+                features: ['Mini Games Hub', 'Smooth Gameplay', 'Browser Compatible']
+            },
+            {
+                id: 'openhouse',
+                title: 'Open House Festival Page',
+                category: 'web',
+                categoryLabel: 'EVENT LANDING',
+                url: 'https://681102328-hue.github.io/OPENHOUSE/',
+                description: 'เว็บไซต์ประชาสัมพันธ์งาน Open House พร้อมตารางกิจกรรม ข้อมูลงานต้อนรับ และการนำเสนอสถานที่แบบโต้ตอบ',
+                icon: 'fa-solid fa-door-open',
+                gradient: 'from-cyan-400 to-teal-500',
+                accentColor: '#00f0ff',
+                features: ['Event Timeline', 'Interactive Map/Info', 'Visitor Guide']
+            },
+            {
+                id: 'games',
+                title: 'Web Games Collection 1',
+                category: 'game',
+                categoryLabel: 'ARCADE GAMES',
+                url: 'https://681102328-hue.github.io/games/',
+                description: 'รวมเกมอาเขตบนเบราว์เซอร์ ทดสอบทักษะและความสนุกแบบคลาสสิก เข้าถึงง่าย เล่นได้ทันทีโดยไม่ต้องติดตั้ง',
+                icon: 'fa-solid fa-trophy',
+                gradient: 'from-fuchsia-500 to-purple-700',
+                accentColor: '#ff007f',
+                features: ['Classic Arcade Mode', 'High Score Track', 'Fun Physics']
+            }
+        ];
+
+        /* ----------------------------------------------------
+           2. WEB AUDIO SYNTHESIZER (No external sound files)
+        ---------------------------------------------------- */
+        let audioEnabled = true;
+        let audioCtx = null;
+
+        function getAudioContext() {
+            if (!audioCtx) {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                if (AudioContext) audioCtx = new AudioContext();
+            }
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            return audioCtx;
+        }
+
+        function playAudio(type) {
+            if (!audioEnabled) return;
+            try {
+                const ctx = getAudioContext();
+                if (!ctx) return;
+
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+
+                const now = ctx.currentTime;
+
+                if (type === 'click') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(440, now);
+                    osc.frequency.exponentialRampToValueAtTime(880, now + 0.08);
+                    gain.gain.setValueAtTime(0.1, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.08);
+                    osc.start(now);
+                    osc.stop(now + 0.08);
+                } else if (type === 'hover') {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(300, now);
+                    gain.gain.setValueAtTime(0.02, now);
+                    gain.gain.linearRampToValueAtTime(0.001, now + 0.04);
+                    osc.start(now);
+                    osc.stop(now + 0.04);
+                } else if (type === 'launch') {
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(220, now);
+                    osc.frequency.exponentialRampToValueAtTime(880, now + 0.25);
+                    gain.gain.setValueAtTime(0.12, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.25);
+                    osc.start(now);
+                    osc.stop(now + 0.25);
+                }
+            } catch (e) {
+                console.log('Audio Context Error:', e);
+            }
+        }
+
+        function toggleSound() {
+            audioEnabled = !audioEnabled;
+            const icon = document.getElementById('soundIcon');
+            if (audioEnabled) {
+                icon.className = 'fa-solid fa-volume-high text-cyan-400';
+                playAudio('click');
+            } else {
+                icon.className = 'fa-solid fa-volume-xmark text-slate-500';
+            }
+        }
+
+        /* ----------------------------------------------------
+           3. DYNAMIC CANVAS BACKGROUND PARTICLES & GRID
+        ---------------------------------------------------- */
+        const canvas = document.getElementById('bgCanvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let mouse = { x: null, y: null, radius: 150 };
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            initParticles();
+        }
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 0.5;
+                this.baseX = this.x;
+                this.baseY = this.y;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.color = Math.random() > 0.5 ? '#00f0ff' : '#ff007f';
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.globalAlpha = 0.6;
+                ctx.fill();
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+
+                if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+
+                // Mouse interaction
+                if (mouse.x !== null) {
+                    let dx = mouse.x - this.x;
+                    let dy = mouse.y - this.y;
+                    let distance = Math.sqrt(dx * dx + dy * dy);
+                    if (distance < mouse.radius) {
+                        let angle = Math.atan2(dy, dx);
+                        let force = (mouse.radius - distance) / mouse.radius;
+                        this.x -= Math.cos(angle) * force * 3;
+                        this.y -= Math.sin(angle) * force * 3;
+                    }
+                }
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            const count = Math.floor((canvas.width * canvas.height) / 12000);
+            for (let i = 0; i < count; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function connectParticles() {
+            for (let a = 0; a < particles.length; a++) {
+                for (let b = a; b < particles.length; b++) {
+                    let dx = particles[a].x - particles[b].x;
+                    let dy = particles[a].y - particles[b].y;
+                    let dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < 110) {
+                        ctx.strokeStyle = '#00f0ff';
+                        ctx.globalAlpha = 1 - (dist / 110);
+                        ctx.lineWidth = 0.4;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[a].x, particles[a].y);
+                        ctx.lineTo(particles[b].x, particles[b].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        function animateCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            connectParticles();
+            requestAnimationFrame(animateCanvas);
+        }
+
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+        });
+
+        window.addEventListener('mouseleave', () => {
+            mouse.x = null;
+            mouse.y = null;
+        });
+
+        /* ----------------------------------------------------
+           4. RENDER PROJECT CARDS & TILT EFFECT
+        ---------------------------------------------------- */
+        function renderProjects(filter = 'all') {
+            const container = document.getElementById('projectsGrid');
+            container.innerHTML = '';
+
+            const filtered = filter === 'all' 
+                ? projectsData 
+                : projectsData.filter(p => p.category === filter);
+
+            filtered.forEach((p, idx) => {
+                const card = document.createElement('div');
+                card.className = 'glass-card rounded-2xl p-6 relative flex flex-col justify-between overflow-hidden group cursor-pointer';
+                card.style.transformStyle = 'preserve-3d';
+                card.setAttribute('onmouseenter', "playAudio('hover')");
+
+                card.innerHTML = `
+                    <!-- Background Subtle Glow -->
+                    <div class="absolute -top-12 -right-12 w-32 h-32 bg-gradient-to-br ${p.gradient} opacity-10 rounded-full blur-2xl group-hover:opacity-30 transition-opacity"></div>
+                    
+                    <div>
+                        <!-- Header / Category Badge -->
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-[10px] font-tech font-bold px-3 py-1 rounded-full bg-white/5 border border-white/10 text-cyan-300 tracking-wider uppercase">
+                                ${p.categoryLabel}
+                            </span>
+                            <span class="text-xs font-tech text-slate-500">0${idx + 1}</span>
+                        </div>
+
+                        <!-- Graphic Icon & Title -->
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br ${p.gradient} p-[1px] shrink-0">
+                                <div class="w-full h-full bg-cyber-dark rounded-[11px] flex items-center justify-center text-xl text-white">
+                                    <i class="${p.icon}"></i>
+                                </div>
+                            </div>
+                            <h3 class="font-tech font-bold text-lg text-white group-hover:text-cyan-400 transition-colors">
+                                ${p.title}
+                            </h3>
+                        </div>
+
+                        <!-- Description -->
+                        <p class="text-slate-300 text-sm font-light leading-relaxed mb-6 line-clamp-3">
+                            ${p.description}
+                        </p>
+
+                        <!-- Feature Badges -->
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            ${p.features.map(f => `<span class="text-[10px] font-mono px-2 py-0.5 rounded bg-black/40 text-slate-400 border border-white/5">#${f}</span>`).join('')}
+                        </div>
+                    </div>
+
+                    <!-- Bottom Action Buttons -->
+                    <div class="pt-4 border-t border-white/10 flex items-center justify-between gap-3">
+                        <button onclick="openModal('${p.id}'); event.stopPropagation();" class="text-xs font-tech text-slate-300 hover:text-white flex items-center gap-1.5 transition-colors">
+                            <i class="fa-regular fa-eye text-cyan-400"></i>
+                            <span>รายละเอียด</span>
+                        </button>
+
+                        <a href="${p.url}" target="_blank" onclick="playAudio('launch'); event.stopPropagation();" class="px-4 py-2 rounded-lg bg-cyan-500/10 border border-cyan-500/30 hover:bg-cyan-500 hover:text-black text-cyan-300 text-xs font-tech font-semibold transition-all duration-300 flex items-center gap-1.5">
+                            <span>เข้าสู่เว็บ</span>
+                            <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                        </a>
+                    </div>
+                `;
+
+                // Add 3D Tilt Listener
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    const rotateX = (centerY - y) / 12;
+                    const rotateY = (x - centerX) / 12;
+
+                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-6px)`;
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)`;
+                });
+
+                // Card Click Opens Modal
+                card.addEventListener('click', () => openModal(p.id));
+
+                container.appendChild(card);
+            });
+        }
+
+        /* ----------------------------------------------------
+           5. FILTERING SYSTEM
+        ---------------------------------------------------- */
+        function filterProjects(category) {
+            playAudio('click');
+            const btns = document.querySelectorAll('.filter-btn');
+            btns.forEach(b => {
+                b.classList.remove('bg-cyan-500', 'text-black', 'font-semibold');
+                b.classList.add('glass-card', 'text-slate-300');
+            });
+
+            event.target.classList.remove('glass-card', 'text-slate-300');
+            event.target.classList.add('bg-cyan-500', 'text-black', 'font-semibold');
+
+            renderProjects(category);
+        }
+
+        /* ----------------------------------------------------
+           6. MODAL SYSTEM & MOCKUPS
+        ---------------------------------------------------- */
+        let currentModalProject = null;
+
+        function openModal(id) {
+            playAudio('click');
+            const project = projectsData.find(p => p.id === id);
+            if (!project) return;
+
+            currentModalProject = project;
+
+            document.getElementById('modalTitle').innerText = project.title;
+            document.getElementById('modalCategory').innerText = project.categoryLabel;
+            document.getElementById('modalDescription').innerText = project.description;
+            document.getElementById('modalUrlText').innerText = project.url;
+            document.getElementById('modalIcon').className = `${project.icon} text-cyan-400`;
+            document.getElementById('modalLaunchBtn').href = project.url;
+
+            // Render Dynamic Visual Mockup inside Modal
+            const mockupContainer = document.getElementById('modalMockup');
+            mockupContainer.innerHTML = `
+                <div class="w-16 h-16 rounded-2xl bg-gradient-to-br ${project.gradient} p-[2px] mb-4 shadow-lg animate-pulse">
+                    <div class="w-full h-full bg-cyber-black rounded-[14px] flex items-center justify-center text-3xl text-cyan-400">
+                        <i class="${project.icon}"></i>
+                    </div>
+                </div>
+                <h4 class="font-tech font-bold text-xl text-white mb-2">${project.title}</h4>
+                <p class="text-xs text-slate-400 font-mono max-w-sm mb-4">${project.url}</p>
+                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-cyan-300 text-xs font-tech">
+                    <span class="w-2 h-2 rounded-full bg-green-400 animate-ping"></span> Live GitHub Pages Site
+                </div>
+            `;
+
+            const modal = document.getElementById('previewModal');
+            const modalContent = document.getElementById('modalContent');
+            
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            modalContent.classList.remove('scale-95');
+            modalContent.classList.add('scale-100');
+        }
+
+        function closeModal() {
+            playAudio('click');
+            const modal = document.getElementById('previewModal');
+            const modalContent = document.getElementById('modalContent');
+
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            modalContent.classList.remove('scale-100');
+            modalContent.classList.add('scale-95');
+        }
+
+        function copyModalUrl() {
+            if (!currentModalProject) return;
+            playAudio('click');
+            navigator.clipboard.writeText(currentModalProject.url).then(() => {
+                alert('คัดลอกลิงก์เว็บไซต์เรียบร้อยแล้ว: ' + currentModalProject.url);
+            });
+        }
+
+        function openRandomProject() {
+            playAudio('launch');
+            const randomProject = projectsData[Math.floor(Math.random() * projectsData.length)];
+            window.open(randomProject.url, '_blank');
+        }
+
+        /* ----------------------------------------------------
+           7. NAVIGATION SCROLL HELPERS
+        ---------------------------------------------------- */
+        function scrollToPortfolio() {
+            playAudio('click');
+            document.getElementById('portfolio').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function scrollToHero() {
+            playAudio('click');
+            document.getElementById('hero').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        /* ----------------------------------------------------
+           8. INITIALIZATION ON WINDOW LOAD
+        ---------------------------------------------------- */
+        window.onload = function () {
+            resizeCanvas();
+            animateCanvas();
+            renderProjects('all');
+
+            window.addEventListener('resize', resizeCanvas);
+
+            // Close Modal on clicking backdrop
+            document.getElementById('previewModal').addEventListener('click', (e) => {
+                if (e.target.id === 'previewModal') closeModal();
+            });
+        };
+    </script>
+</body>
+</html>
